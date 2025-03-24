@@ -50,9 +50,9 @@ class GestureRecognition:
         self.recognizer = vision.GestureRecognizer.create_from_options(self.options)
 
     def draw_landmarks_on_image(self, rgb_image, detection_result):
-        MARGIN = 10  # pixels
-        FONT_SIZE = 1
-        FONT_THICKNESS = 1
+        MARGIN = 20  # increased margin
+        FONT_SIZE = 1.5  # increased font size
+        FONT_THICKNESS = 2  # increased thickness
         HANDEDNESS_TEXT_COLOR = (88, 205, 54)  # vibrant green
 
         hand_landmarks_list = detection_result.hand_landmarks
@@ -158,7 +158,7 @@ class GestureRecognition:
 
         # Check if any gestures are detected
         if len(result.gestures) > 0:
-            gesture_label = result.gestures[0][0].category_name  # Assuming the first gesture is the primary one
+            gesture_label = result.gestures[0][0].category_name
             distance = self.distance_between_fingers(self.index_tip_local, self.thumb_tip_local)
             pygame.mixer.init()
             audio_file_path = "/Users/evancureton/Desktop/gesture_recognition/best_sound.mp3"
@@ -184,14 +184,10 @@ class GestureRecognition:
         # Draw landmarks for all detected hands
         annotated_frame = self.draw_landmarks_on_image(frame, result)
 
-        # Annotate the gesture text on the image
-        cv2.putText(annotated_frame, f'Gesture: {gesture_label}', (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        cv2.putText(annotated_frame, f'Distance between index and thumb: {distance:.2f}', (20,60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-
-
-        # Update the current frame for display
+        # Update the current frame and gesture info
         self.current_frame = annotated_frame
         self.current_gesture = gesture_label
+        self.current_distance = distance  # Add this line to store the distance
 
     def start_recognition(self, mode = 'o', stop_gesture = "", duration_sec = float("inf")):
         timestamp = 0
@@ -263,4 +259,4 @@ if __name__ == "__main__":
     # # Wait for threads to complete
     # thread1.join()
     # thread2.join()
-    
+
