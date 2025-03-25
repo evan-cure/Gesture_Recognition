@@ -65,3 +65,42 @@ initCamera().then(() => {
         processFrame();
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeDisplay = document.getElementById('volume');
+    const volumeUpBtn = document.getElementById('volumeUp');
+    const volumeDownBtn = document.getElementById('volumeDown');
+
+    async function updateVolume(value) {
+        try {
+            const response = await fetch('/set_volume', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ volume: value / 100 })
+            });
+            const result = await response.json();
+            volumeDisplay.textContent = Math.round(result.volume * 100);
+        } catch (err) {
+            console.error("Error updating volume:", err);
+        }
+    }
+
+    volumeSlider.addEventListener('input', (e) => {
+        updateVolume(e.target.value);
+    });
+
+    volumeUpBtn.addEventListener('click', () => {
+        const newValue = Math.min(100, parseInt(volumeSlider.value) + 10);
+        volumeSlider.value = newValue;
+        updateVolume(newValue);
+    });
+
+    volumeDownBtn.addEventListener('click', () => {
+        const newValue = Math.max(0, parseInt(volumeSlider.value) - 10);
+        volumeSlider.value = newValue;
+        updateVolume(newValue);
+    });
+});

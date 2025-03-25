@@ -34,6 +34,8 @@ class GestureRecognition:
         self.ring_tip_local = (0,0)
         self.pinky_tip_local = (0,0)
         
+        self.volume = 0.5  # Default volume (0.0 to 1.0)
+        pygame.mixer.init()
 
         # MediaPipe and Gesture Recognizer setup
         self.mp_hands = mp.solutions.hands
@@ -151,6 +153,16 @@ class GestureRecognition:
 
         return distance
 
+    def set_volume(self, volume):
+        """Set volume between 0.0 and 1.0"""
+        self.volume = max(0.0, min(1.0, volume))
+        pygame.mixer.music.set_volume(self.volume)
+        
+    def adjust_volume(self, change):
+        """Adjust volume up or down by the given amount"""
+        self.set_volume(self.volume + change)
+        return self.volume
+
     def print_result(self, result, output_image, timestamps_ms):
         gesture_label = "No gesture detected"
         distance = 0.0
@@ -168,6 +180,13 @@ class GestureRecognition:
                     pygame.mixer.music.load(audio_file_path)
                     pygame.mixer.music.play()
                     self.played = True
+                pygame.mixer.music.set_volume(self.volume)
+                
+            elif gesture_label == "Victory":  # Add volume up gesture
+                self.adjust_volume(0.1)
+                
+            elif gesture_label == "ThumbDown":  # Add volume down gesture
+                self.adjust_volume(-0.1)
 
             elif gesture_label == "Pointing_Up":
                 multi = 0

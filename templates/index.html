@@ -17,15 +17,24 @@
             <div class="gesture-info">
                 <h2>Current Gesture: <span id="gesture">None</span></h2>
                 <h3>Distance: <span id="distance">0.00</span></h3>
+                <div class="volume-control">
+                    <h3>Volume: <span id="volume">50</span>%</h3>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="50">
+                    <div class="volume-buttons">
+                        <button id="volumeDown">-</button>
+                        <button id="volumeUp">+</button>
+                    </div>
+                </div>
             </div>
-            <div class="instructions">
-                <p>Instructions:</p>
-                <ul>
-                    <li>Show your hand to the camera</li>
-                    <li>Make a closed fist for wacky effects</li>
-                    <li>Point up to reset effects</li>
-                </ul>
-            </div>
+        </div>
+        <div class="instructions">
+            <p>Instructions:</p>
+            <ul>
+                <li>Show your hand to the camera</li>
+                <li>The image will distort when a hand is detected</li>
+                <li>The magnitude of distortion depends on the distance between the thumb and pointer finger.</li>
+                <li>Point up to reset effects</li>
+            </ul>
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

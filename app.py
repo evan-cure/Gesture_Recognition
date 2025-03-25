@@ -49,6 +49,13 @@ def process_frame():
         'timestamp': gesture_recognition.timestamp
     })
 
+@app.route('/set_volume', methods=['POST'])
+def set_volume():
+    data = request.get_json()
+    volume = data.get('volume', 0.5)
+    gesture_recognition.set_volume(volume)
+    return jsonify({'volume': gesture_recognition.volume})
+
 @app.route('/video_feed')
 def video_feed():
     return Response(gen_frames(),
