@@ -203,7 +203,7 @@ class GestureRecognition:
             
 
             # Write the frame to the output file
-            self.out.write(frame)
+            # self.out.write(frame)
 
             # Convert frame to MediaPipe format
             mp_frame = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
